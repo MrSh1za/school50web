@@ -1,0 +1,44 @@
+Options -Indexes -MultiViews
+DirectoryIndex index.html
+DirectorySlash Off
+AddDefaultCharset utf-8
+AddType image/webp .webp
+AddType font/woff2 .woff2
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  RewriteRule (^|/)\.(?!well-known/) - [R=404,L]
+
+  RewriteRule ^about/covid-19/?$ /pidtrymka#arkhiv [R=301,NE,L]
+
+  RewriteRule ^([a-z0-9-]+(?:/[a-z0-9-]+)*)/$ /$1 [R=301,L]
+
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^([a-z0-9-]+(?:/[a-z0-9-]+)*)$ $1.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always unset X-Powered-By
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "DENY"
+  Header always set Cross-Origin-Opener-Policy "same-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  Header always set Strict-Transport-Security "max-age=31536000" env=HTTPS
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'sha256-nOLxskGnxjtqLG4NGIgEL5zs+0SwH+j1QW5odDSpyXM='; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'"
+
+  <FilesMatch "\.(html|css|js|xml|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+
+  <FilesMatch "\.(webp|jpg|png|ico|woff2|pdf)$">
+    Header set Cache-Control "public, max-age=2592000"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript application/json application/xml image/svg+xml
+</IfModule>

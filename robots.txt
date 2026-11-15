@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://school50.lviv.ua/sitemap.xml
