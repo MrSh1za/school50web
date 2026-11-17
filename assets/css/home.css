@@ -1,9 +1,71 @@
+.quick {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(16rem, 100%), 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.quick__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: var(--space-4);
+  align-items: center;
+  margin: 0;
+  padding: var(--space-4) var(--space-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition:
+    border-color var(--dur-fast) var(--ease),
+    box-shadow var(--dur-fast) var(--ease);
+}
+.quick__item:hover {
+  border-color: var(--link);
+  box-shadow: var(--shadow-raised);
+}
+.quick__icon {
+  grid-row: span 2;
+  color: var(--link);
+}
+.quick__link {
+  font-weight: var(--fw-bold);
+  color: var(--heading);
+  text-decoration: none;
+  line-height: 1.3;
+}
+@supports selector(:has(*)) {
+  .quick__item:has(.quick__link:focus-visible) {
+    outline: 3px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+  .quick__link:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+}
+.quick__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+.quick__item:hover .quick__link {
+  text-decoration: underline;
+}
+.quick__hint {
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
 .hero {
   position: relative;
   overflow: hidden;
   background: var(--brand-gradient);
   color: var(--on-brand);
-  border-top: 1px solid rgb(255 255 255 / 0.14);
+  border-top: 1px solid var(--on-brand-divider);
 }
 .hero__inner {
   display: grid;
@@ -32,26 +94,46 @@
   color: var(--on-brand);
   max-width: 38rem;
 }
-.hero__roles-label {
-  margin: 0 0 var(--space-3);
-  font-weight: var(--fw-bold);
+.qsearch--hero {
+  max-width: 32rem;
+  margin-bottom: var(--space-4);
+}
+.qsearch--hero .qsearch__label {
   color: var(--on-brand);
 }
+.qsearch--hero .qsearch__input,
+.qsearch--hero .qsearch__btn {
+  min-height: 3rem;
+  border-color: var(--surface);
+  font-size: var(--fs-large);
+}
 .hero__roles {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3);
+  margin: 0;
+  color: var(--on-brand);
+}
+.hero__roles a {
+  color: var(--on-brand);
+  font-weight: var(--fw-bold);
 }
 .hero__media {
   position: relative;
+  display: none;
   align-self: center;
+}
+@media (min-width: 64rem) {
+  .hero__media {
+    display: block;
+  }
+  .qsearch--header {
+    display: none;
+  }
 }
 .hero__media img {
   width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
   border-radius: var(--radius);
-  box-shadow: 0 16px 40px rgb(0 0 0 / 0.28);
+  box-shadow: var(--shadow-photo);
 }
 
 .hero__ring,
@@ -80,15 +162,6 @@
     align-items: center;
     gap: var(--space-8);
     padding-block: var(--space-8) var(--space-9);
-  }
-}
-@media (max-width: 47.99rem) {
-  .hero__ring {
-    width: 4.5rem;
-    height: 4.5rem;
-    right: -0.75rem;
-    top: -1.25rem;
-    border-width: 0.6rem;
   }
 }
 
@@ -182,6 +255,7 @@
 }
 .datebox {
   display: grid;
+  flex: none;
   place-items: center;
   min-width: 4.5rem;
   padding: var(--space-2) var(--space-3);
@@ -192,7 +266,7 @@
   line-height: 1.1;
 }
 .datebox__day {
-  font-size: 1.75rem;
+  font-size: var(--fs-number);
   font-weight: var(--fw-bold);
 }
 .datebox__month {
@@ -224,4 +298,44 @@
 }
 .support__card > :last-child {
   margin-bottom: 0;
+}
+
+@media screen and (max-width: 47.99rem) {
+  .hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+    padding-block: var(--space-5);
+  }
+  .hero__title {
+    font-size: clamp(1.5rem, 0.6rem + 4.5vw, 1.75rem);
+  }
+  .hero__lead {
+    margin-bottom: var(--space-4);
+  }
+  .hero + .home-section {
+    padding-top: var(--space-5);
+  }
+  .quick {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-2);
+  }
+  .quick__item {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-2);
+    padding: var(--space-3);
+  }
+  .quick__icon {
+    grid-row: auto;
+  }
+  .quick__hint {
+    display: none;
+  }
+  .home-section {
+    padding-block: var(--space-6);
+  }
+  .home-section__head {
+    margin-bottom: var(--space-4);
+  }
+  .notice {
+    padding: var(--space-4);
+  }
 }

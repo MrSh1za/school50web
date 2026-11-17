@@ -1,0 +1,46 @@
+.site-header,
+.alertbar,
+.skip-link,
+.secnav,
+.ask,
+.site-footer,
+.filter,
+.related,
+.lightbox,
+.crumbs,
+.toc,
+.featured,
+.qsearch,
+.pager,
+.totop {
+  display: none !important;
+}
+body {
+  font-size: var(--fs-print);
+  color: var(--print-ink);
+}
+.page-head {
+  background: none;
+  border: 0;
+  padding: 0 0 1rem;
+}
+.page--with-aside {
+  display: block;
+}
+.content {
+  max-width: none;
+}
+a {
+  color: var(--print-ink);
+}
+.doc__link::after,
+.content p a[href^='http']::after {
+  content: ' (' attr(href) ')';
+  font-size: var(--fs-print-note);
+  word-break: break-all;
+}
+.card,
+.doc,
+.table tr {
+  break-inside: avoid;
+}

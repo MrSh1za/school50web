@@ -1,6 +1,12 @@
 (() => {
   const RESULT_FORMS = ['результат', 'результати', 'результатів'];
   const MAX_RESULTS = 60;
+  const TYPING_PAUSE = 400;
+  const LATIN_TO_CYRILLIC = {
+    q: 'й', w: 'ц', e: 'у', r: 'к', t: 'е', y: 'н', u: 'г', i: 'ш', o: 'щ', p: 'з', '[': 'х',
+    ']': 'ї', a: 'ф', s: 'і', d: 'в', f: 'а', g: 'п', h: 'р', j: 'о', k: 'л', l: 'д', ';': 'ж',
+    "'": 'є', z: 'я', x: 'ч', c: 'с', v: 'м', b: 'и', n: 'т', m: 'ь', ',': 'б', '.': 'ю',
+  };
 
   function plural(count, forms) {
     const lastTwo = count % 100;
@@ -32,6 +38,45 @@
       .map(stem);
   }
 
+  function fromLatinLayout(query) {
+    return query
+      .toLowerCase()
+      .split('')
+      .map((letter) => LATIN_TO_CYRILLIC[letter] || letter)
+      .join('');
+  }
+
+  function withinOneEdit(a, b) {
+    if (Math.abs(a.length - b.length) > 1) return false;
+    let i = 0;
+    let j = 0;
+    let edits = 0;
+    while (i < a.length && j < b.length) {
+      if (a[i] === b[j]) {
+        i += 1;
+        j += 1;
+      } else {
+        edits += 1;
+        if (edits > 1) return false;
+        if (a.length > b.length) i += 1;
+        else if (a.length < b.length) j += 1;
+        else {
+          i += 1;
+          j += 1;
+        }
+      }
+    }
+    return edits + (a.length - i) + (b.length - j) <= 1;
+  }
+
+  function nearlyStartsWith(word, wordStem) {
+    if (wordStem.length < 4 || word.length < wordStem.length - 1) return false;
+    for (let size = wordStem.length - 1; size <= wordStem.length + 1; size += 1) {
+      if (withinOneEdit(word.slice(0, size), wordStem)) return true;
+    }
+    return false;
+  }
+
   function prepareIndex(entries) {
     return entries.map((entry) => ({
       entry,
@@ -42,22 +87,31 @@
     }));
   }
 
-  function search(prepared, query) {
+  function wordScore(item, wordStem) {
+    const exact = (words) => words.some((word) => word.startsWith(wordStem));
+    const near = (words) => words.some((word) => nearlyStartsWith(word, wordStem));
+    if (exact(item.titleWords)) return 10;
+    if (exact(item.keywordWords)) return 5;
+    if (exact(item.otherWords)) return 2;
+    if (near(item.titleWords)) return 4;
+    if (near(item.keywordWords)) return 2;
+    if (near(item.otherWords)) return 1;
+    return 0;
+  }
+
+  function rank(prepared, query, limit) {
     const stems = queryStems(query);
     if (!stems.length) return [];
 
     const normalizedQuery = normalize(query);
-    const startsWithStem = (words, wordStem) => words.some((word) => word.startsWith(wordStem));
     const scored = [];
 
     prepared.forEach((item) => {
       let score = 0;
       const matchesAll = stems.every((wordStem) => {
-        if (startsWithStem(item.titleWords, wordStem)) score += 10;
-        else if (startsWithStem(item.keywordWords, wordStem)) score += 5;
-        else if (startsWithStem(item.otherWords, wordStem)) score += 2;
-        else return false;
-        return true;
+        const points = wordScore(item, wordStem);
+        score += points;
+        return points > 0;
       });
       if (!matchesAll) return;
       if (item.title.includes(normalizedQuery)) score += 8;
@@ -67,8 +121,15 @@
 
     return scored
       .sort((a, b) => b.score - a.score || a.entry.title.length - b.entry.title.length)
-      .slice(0, MAX_RESULTS)
+      .slice(0, limit || MAX_RESULTS)
       .map((item) => item.entry);
+  }
+
+  function find(prepared, query, limit) {
+    const results = rank(prepared, query, limit);
+    if (results.length || !/[a-z]/i.test(query)) return { query, results };
+    const converted = fromLatinLayout(query);
+    return { query: converted, results: rank(prepared, converted, limit) };
   }
 
   function highlighted(text, query) {
@@ -104,17 +165,18 @@
       link.append(note);
     }
 
-    const meta = document.createElement('p');
-    meta.className = 'result__meta';
-    meta.textContent = `${entry.isDocument ? 'Документ' : 'Сторінка'}${entry.section ? ` · ${entry.section}` : ''}`;
-    if (isExternal) {
-      const arrow = document.createElement('span');
-      arrow.setAttribute('aria-hidden', 'true');
-      arrow.textContent = ' ↗';
-      meta.append(arrow);
+    item.append(link);
+    if (entry.section || isExternal) {
+      const meta = document.createElement('p');
+      meta.className = 'result__meta';
+      meta.textContent = entry.section ? `Розділ: ${entry.section}` : '';
+      if (isExternal) {
+        const arrow = document.createElement('span');
+        arrow.textContent = entry.section ? ' · на іншому сайті ↗' : 'На іншому сайті ↗';
+        meta.append(arrow);
+      }
+      item.append(meta);
     }
-
-    item.append(link, meta);
     if (entry.description) {
       const description = document.createElement('p');
       description.className = 'result__text';
@@ -124,27 +186,52 @@
     return item;
   }
 
-  function statusText(count, query) {
+  function resultGroup(title, entries, query) {
+    const group = document.createElement('section');
+    group.className = 'results__group';
+    const heading = document.createElement('h2');
+    heading.className = 'results__title';
+    heading.textContent = `${title} (${entries.length})`;
+    const list = document.createElement('ol');
+    list.className = 'results__list';
+    list.setAttribute('role', 'list');
+    entries.forEach((entry) => list.append(resultItem(entry, query)));
+    group.append(heading, list);
+    return group;
+  }
+
+  function statusText(count, query, typedQuery) {
     if (!count) {
-      return `За запитом «${query}» нічого не знайдено. Спробуйте інше слово або перегляньте сторінку «Від А до Я».`;
+      return `За запитом «${typedQuery}» нічого не знайдено. Спробуйте інше слово або перегляньте сторінку «Від А до Я».`;
     }
-    return `Знайдено ${count} ${plural(count, RESULT_FORMS)} за запитом «${query}».`;
+    const found = `Знайдено ${count} ${plural(count, RESULT_FORMS)} за запитом «${query}».`;
+    return query === typedQuery ? found : `${found} Ви ввели «${typedQuery}» в англійській розкладці.`;
   }
 
   function initSearch(root) {
     const form = root.querySelector('form');
     const field = root.querySelector('input[type="search"]');
     const status = root.querySelector('[role="status"]');
-    const list = root.querySelector('.results');
+    const output = root.querySelector('.results');
     const prepared = prepareIndex(window.SEARCH_INDEX || []);
 
+    let last = { query: '', results: [] };
+    let pauseTimer = 0;
+
     function render() {
-      const query = field.value.trim();
-      const results = search(prepared, query);
-      status.textContent = query ? statusText(results.length, query) : '';
-      list.textContent = '';
-      results.forEach((entry) => list.append(resultItem(entry, query)));
-      list.hidden = !results.length;
+      const typed = field.value.trim();
+      last = find(prepared, typed);
+      output.textContent = '';
+      const pages = last.results.filter((entry) => !entry.isDocument);
+      const documents = last.results.filter((entry) => entry.isDocument);
+      if (pages.length) output.append(resultGroup('Сторінки', pages, last.query));
+      if (documents.length) output.append(resultGroup('Документи', documents, last.query));
+      output.hidden = !last.results.length;
+    }
+
+    function announce() {
+      const typed = field.value.trim();
+      status.textContent = typed ? statusText(last.results.length, last.query, typed) : '';
     }
 
     function rememberQuery() {
@@ -157,15 +244,28 @@
       }
     }
 
-    form.addEventListener('submit', (event) => event.preventDefault());
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+      clearTimeout(pauseTimer);
+      announce();
+      rememberQuery();
+    });
     field.addEventListener('input', () => {
       render();
-      rememberQuery();
+      clearTimeout(pauseTimer);
+      pauseTimer = setTimeout(() => {
+        announce();
+        rememberQuery();
+      }, TYPING_PAUSE);
     });
 
     field.value = new URLSearchParams(location.search).get('q') || '';
-    if (field.value) render();
+    if (field.value) {
+      render();
+      announce();
+    }
   }
 
+  window.SchoolSearch = { prepare: prepareIndex, find, highlighted };
   document.querySelectorAll('[data-search]').forEach(initSearch);
 })();

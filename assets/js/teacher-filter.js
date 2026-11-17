@@ -1,4 +1,6 @@
 (() => {
+  const TYPING_PAUSE = 400;
+
   function normalize(text) {
     return text
       .toLowerCase()
@@ -17,6 +19,14 @@
     const resetButton = panel.querySelector('[data-filter-reset]');
     const status = panel.querySelector('[role="status"]');
     const total = root.querySelectorAll('tr[data-name]').length;
+
+    let statusMessage = '';
+    let pauseTimer = 0;
+
+    function announce() {
+      clearTimeout(pauseTimer);
+      status.textContent = statusMessage;
+    }
 
     function update() {
       const text = normalize(textField.value);
@@ -37,17 +47,24 @@
       });
 
       resetButton.hidden = !isActive;
-      status.textContent = isActive
-        ? `Знайдено: ${shown} з ${total}`
-        : `Усього в таблицях: ${total}`;
+      statusMessage = isActive ? `Знайдено: ${shown} з ${total}` : `Усього в таблицях: ${total}`;
     }
 
-    textField.addEventListener('input', update);
-    groupField.addEventListener('change', update);
+    function updateNow() {
+      update();
+      announce();
+    }
+
+    textField.addEventListener('input', () => {
+      update();
+      clearTimeout(pauseTimer);
+      pauseTimer = setTimeout(announce, TYPING_PAUSE);
+    });
+    groupField.addEventListener('change', updateNow);
     resetButton.addEventListener('click', () => {
       textField.value = '';
       groupField.value = '';
-      update();
+      updateNow();
       textField.focus();
     });
 

@@ -40,18 +40,12 @@
       type="font/woff2"
       crossorigin
     >
-    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/base.css">
+    <link rel="stylesheet" href="../assets/css/layout.css">
+    <link rel="stylesheet" href="../assets/css/components.css">
     <link rel="stylesheet" href="../assets/css/icons.css">
-    <script>
-      document.documentElement.classList.add('js');
-      if (location.protocol === 'file:') {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        const styles = document.querySelector('link[href$="main.css"]');
-        link.href = styles.href.replace('main.css', 'fonts-offline.css');
-        document.head.append(link);
-      }
-    </script>
+    <link rel="stylesheet" href="../assets/css/print.css" media="print">
+    <script src="../assets/js/head.js"></script>
     <script src="../assets/js/main.js" defer></script>
     <script type="application/ld+json">
       {
@@ -67,7 +61,7 @@
           {
             "@type": "ListItem",
             "position": 2,
-            "name": "Прозорість",
+            "name": "Документи",
             "item": "https://school50.lviv.ua/prozorist-ta-inform-vidkrytist"
           },
           {
@@ -110,7 +104,6 @@
         <div class="container topbar__inner">
           <nav class="topbar__nav" aria-label="Для кого">
             <ul>
-              <li><a href="../novyny.html">Новини</a></li>
               <li><a href="../uchniam.html">Учням</a></li>
               <li><a href="../batkam.html">Батькам</a></li>
               <li><a href="../vchyteliam.html">Вчителям</a></li>
@@ -120,10 +113,6 @@
             <a class="topbar__tel" href="tel:+380322385291">
               <span class="icon icon-phone icon-small" aria-hidden="true"></span>
               +38 032 238 52 91
-            </a>
-            <a class="topbar__search" href="../poshuk.html">
-              <span class="icon icon-search icon-small" aria-hidden="true"></span>
-              Пошук
             </a>
           </div>
         </div>
@@ -138,6 +127,33 @@
               alt="Середня загальноосвітня школа № 50 м. Львова — на головну"
             >
           </a>
+          <search class="qsearch qsearch--header" aria-labelledby="qsearch-header-label">
+            <form class="qsearch__form" action="../poshuk.html" data-quick-search>
+              <label
+                id="qsearch-header-label"
+                class="visually-hidden"
+                for="qsearch-header"
+              >Пошук по сайту</label>
+              <div class="qsearch__row">
+                <input
+                  id="qsearch-header"
+                  class="qsearch__input"
+                  type="search"
+                  name="q"
+                  placeholder="Розклад, харчування, вступ…"
+                  autocomplete="off"
+                  autocapitalize="none"
+                  autocorrect="off"
+                  spellcheck="false"
+                  enterkeyhint="search"
+                >
+                <button type="submit" class="qsearch__btn">
+                  <span class="icon icon-search" aria-hidden="true"></span>
+                  <span class="visually-hidden">Шукати</span>
+                </button>
+              </div>
+            </form>
+          </search>
           <nav class="mainnav" aria-label="Головне меню">
             <ul class="mainnav__list">
               <li class="mainnav__item">
@@ -145,46 +161,127 @@
                 <div class="mega" id="mega-about" hidden>
                   <div class="container mega__inner">
                     <div class="mega__intro">
-                      <p class="mega__title">Про школу</p>
-                      <p class="mega__blurb">
-                        Хто ми, мова навчання, адміністрація, колектив і як влаштоване управління
-                        школою.
+                      <p class="mega__title">
+                        <span class="icon icon-info" aria-hidden="true"></span
+                        >Про школу
                       </p>
-                      <a class="more-link" href="../about.html">Усе про розділ<span aria-hidden="true"> →</span></a>
+                      <p class="mega__blurb">
+                        Хто ми, адміністрація, педагогічний колектив, управління школою, кількість
+                        учнів і вакансії.
+                      </p>
+                      <a
+                        class="more-link"
+                        href="../about.html"
+                      >Усе про розділ<span aria-hidden="true"> →</span></a>
+                      <p class="mega__help">
+                        Не знайшли? <a href="../a-ia.html">Від А до Я</a> ·
+                        <a href="../poshuk.html">Пошук</a>
+                      </p>
                     </div>
                     <ul class="mega__links">
-                      <li><a href="../about/management.html">Адміністрація</a></li>
-                      <li><a href="team.html">Педагогічний колектив</a></li>
-                      <li><a href="struktura-upravlinnia.html">Структура управління</a></li>
                       <li>
-                        <a href="../about/pupils-government.html">Учнівське самоврядування</a>
+                        <a href="../about/management.html">
+                          <span class="mega__label">Адміністрація</span>
+                          <span class="mega__desc">Директор і заступники</span>
+                        </a>
                       </li>
-                      <li><a href="number-of-people.html">Кількість учнів</a></li>
-                      <li><a href="../kontakty.html">Контакти</a></li>
+                      <li>
+                        <a href="team.html">
+                          <span class="mega__label">Педагогічний колектив</span>
+                          <span class="mega__desc">Учителі, стаж і категорії</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="struktura-upravlinnia.html">
+                          <span class="mega__label">Структура управління</span>
+                          <span class="mega__desc">Від ради школи до спільнот учителів</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="../about/pupils-government.html">
+                          <span class="mega__label">Учнівське самоврядування</span>
+                          <span class="mega__desc">Президент, рада й тіми ВУС</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="number-of-people.html">
+                          <span class="mega__label">Кількість учнів</span>
+                          <span class="mega__desc">433 учні, мережа класів</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="vakansii.html">
+                          <span class="mega__label">Вакансії</span>
+                          <span class="mega__desc">Вільні посади й конкурс</span>
+                        </a>
+                      </li>
                     </ul>
                   </div>
                 </div>
               </li>
               <li class="mainnav__item">
-                <a class="mainnav__link" href="../navchannia.html" data-mega="mega-navchannia">Навчання</a>
+                <a
+                  class="mainnav__link"
+                  href="../navchannia.html"
+                  data-mega="mega-navchannia"
+                >Навчання</a>
                 <div class="mega" id="mega-navchannia" hidden>
                   <div class="container mega__inner">
                     <div class="mega__intro">
-                      <p class="mega__title">Навчання</p>
-                      <p class="mega__blurb">
-                        Розклад уроків і дзвінків, критерії оцінювання, інклюзивна освіта та
-                        бібліотека.
+                      <p class="mega__title">
+                        <span class="icon icon-book-open" aria-hidden="true"></span
+                        >Навчання
                       </p>
-                      <a class="more-link" href="../navchannia.html">Усе про розділ<span aria-hidden="true"> →</span></a>
+                      <p class="mega__blurb">
+                        Розклад уроків і дзвінків, харчування, гуртки, критерії оцінювання,
+                        інклюзивна освіта та бібліотека.
+                      </p>
+                      <a
+                        class="more-link"
+                        href="../navchannia.html"
+                      >Усе про розділ<span aria-hidden="true"> →</span></a>
+                      <p class="mega__help">
+                        Не знайшли? <a href="../a-ia.html">Від А до Я</a> ·
+                        <a href="../poshuk.html">Пошук</a>
+                      </p>
                     </div>
                     <ul class="mega__links">
                       <li>
-                        <a href="../about/rozklad-zaniat-ta-rezhym-roboty.html">Розклад і режим роботи</a>
+                        <a href="../about/rozklad-zaniat-ta-rezhym-roboty.html">
+                          <span class="mega__label">Розклад і дзвінки</span>
+                          <span class="mega__desc">Уроки, дзвінки, їдальня</span>
+                        </a>
                       </li>
-                      <li><a href="../about/evaluation-criteria.html">Критерії оцінювання</a></li>
-                      <li><a href="../inclusive-education.html">Інклюзивна освіта</a></li>
-                      <li><a href="../library.html">Бібліотека</a></li>
-                      <li><a href="documents.html">Установчі документи</a></li>
+                      <li>
+                        <a href="../batkam/kharchuvannia-uchniv.html">
+                          <span class="mega__label">Харчування</span>
+                          <span class="mega__desc">Графік і меню за сезонами</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="../about/hurtky-ta-sektsii.html">
+                          <span class="mega__label">Гуртки та секції</span>
+                          <span class="mega__desc">Розклад, керівники, телефони</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="../about/evaluation-criteria.html">
+                          <span class="mega__label">Критерії оцінювання</span>
+                          <span class="mega__desc">Для класів і за предметами</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="../inclusive-education.html">
+                          <span class="mega__label">Інклюзивна освіта</span>
+                          <span class="mega__desc">Команда фахівців і заняття</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="../library.html">
+                          <span class="mega__label">Бібліотека</span>
+                          <span class="mega__desc">Вибір підручників</span>
+                        </a>
+                      </li>
                     </ul>
                   </div>
                 </div>
@@ -194,103 +291,239 @@
                 <div class="mega" id="mega-vstup" hidden>
                   <div class="container mega__inner">
                     <div class="mega__intro">
-                      <p class="mega__title">Вступ</p>
+                      <p class="mega__title">
+                        <span class="icon icon-school" aria-hidden="true"></span
+                        >Вступ
+                      </p>
                       <p class="mega__blurb">
-                        Як записати дитину до 1 класу, які потрібні документи і хто належить до
+                        Як записати дитину до 1&nbsp;класу, які потрібні документи і хто належить до
                         території обслуговування.
                       </p>
-                      <a class="more-link" href="../vstup.html">Усе про розділ<span aria-hidden="true"> →</span></a>
+                      <a
+                        class="more-link"
+                        href="../vstup.html"
+                      >Усе про розділ<span aria-hidden="true"> →</span></a>
+                      <p class="mega__help">
+                        Не знайшли? <a href="../a-ia.html">Від А до Я</a> ·
+                        <a href="../poshuk.html">Пошук</a>
+                      </p>
                     </div>
                     <ul class="mega__links">
-                      <li><a href="../vstup/1-klas.html">Вступ до 1 класу</a></li>
-                      <li><a href="../service-area.html">Територія обслуговування</a></li>
+                      <li>
+                        <a href="../vstup/1-klas.html">
+                          <span class="mega__label">Вступ до 1&nbsp;класу</span>
+                          <span class="mega__desc">Кроки, документи, накази</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="../service-area.html">
+                          <span class="mega__label">Територія обслуговування</span>
+                          <span class="mega__desc">Вулиці з пріоритетом при вступі</span>
+                        </a>
+                      </li>
                     </ul>
                   </div>
                 </div>
               </li>
               <li class="mainnav__item">
-                <a class="mainnav__link" href="../zhyttia-shkoly.html" data-mega="mega-zhyttia">Життя школи</a>
+                <a
+                  class="mainnav__link"
+                  href="../zhyttia-shkoly.html"
+                  data-mega="mega-zhyttia"
+                >Життя школи</a>
                 <div class="mega" id="mega-zhyttia" hidden>
                   <div class="container mega__inner">
                     <div class="mega__intro">
-                      <p class="mega__title">Життя школи</p>
-                      <p class="mega__blurb">
-                        Новини й оголошення, харчування, гуртки, виховна робота, проєкти й
-                        досягнення учнів.
+                      <p class="mega__title">
+                        <span class="icon icon-users" aria-hidden="true"></span
+                        >Життя школи
                       </p>
-                      <a class="more-link" href="../zhyttia-shkoly.html">Усе про розділ<span aria-hidden="true"> →</span></a>
+                      <p class="mega__blurb">
+                        Новини й оголошення, виховна робота, проєкти й акції, досягнення учнів і
+                        громадський бюджет.
+                      </p>
+                      <a
+                        class="more-link"
+                        href="../zhyttia-shkoly.html"
+                      >Усе про розділ<span aria-hidden="true"> →</span></a>
+                      <p class="mega__help">
+                        Не знайшли? <a href="../a-ia.html">Від А до Я</a> ·
+                        <a href="../poshuk.html">Пошук</a>
+                      </p>
                     </div>
                     <ul class="mega__links">
-                      <li><a href="../novyny.html">Новини</a></li>
-                      <li><a href="../batkam/kharchuvannia-uchniv.html">Харчування</a></li>
-                      <li><a href="../about/hurtky-ta-sektsii.html">Гуртки та секції</a></li>
-                      <li><a href="../vykhovna-robota.html">Виховна робота</a></li>
                       <li>
-                        <a href="../vykhovna-robota/nashi-proekty.html">Наші проєкти та акції</a>
+                        <a href="../novyny.html">
+                          <span class="mega__label">Новини</span>
+                          <span class="mega__desc">Оголошення й архів</span>
+                        </a>
                       </li>
                       <li>
-                        <a href="../vykhovna-robota/my-vamy-pyshaiemosia.html">Наші досягнення</a>
+                        <a href="../vykhovna-robota.html">
+                          <span class="mega__label">Виховна робота</span>
+                          <span class="mega__desc">Календар подій і напрями</span>
+                        </a>
                       </li>
                       <li>
-                        <a href="../about/uchast-u-proektakh-hromadskoho-biudzhetu-mikroproektakh.html">Проєкти громадського бюджету</a>
+                        <a href="../vykhovna-robota/nashi-proekty.html">
+                          <span class="mega__label">Наші проєкти та акції</span>
+                          <span class="mega__desc">Ярмарки й акції для ЗСУ</span>
+                        </a>
                       </li>
-                      <li><a href="../about/creative-workshop.html">Творча майстерня</a></li>
+                      <li>
+                        <a href="../vykhovna-robota/my-vamy-pyshaiemosia.html">
+                          <span class="mega__label">Наші досягнення</span>
+                          <span class="mega__desc">Олімпіади й спорт</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          href="../about/uchast-u-proektakh-hromadskoho-biudzhetu-mikroproektakh.html"
+                        >
+                          <span class="mega__label">Проєкти громадського бюджету</span>
+                          <span class="mega__desc">Конкурси й проєкти школи</span>
+                        </a>
+                      </li>
                     </ul>
                   </div>
                 </div>
               </li>
               <li class="mainnav__item">
-                <a class="mainnav__link" href="../pidtrymka.html" data-mega="mega-pidtrymka">Підтримка і безпека</a>
+                <a
+                  class="mainnav__link"
+                  href="../pidtrymka.html"
+                  data-mega="mega-pidtrymka"
+                >Підтримка і безпека</a>
                 <div class="mega" id="mega-pidtrymka" hidden>
                   <div class="container mega__inner">
                     <div class="mega__intro">
-                      <p class="mega__title">Підтримка і безпека</p>
+                      <p class="mega__title">
+                        <span class="icon icon-heart-handshake" aria-hidden="true"></span
+                        >Підтримка і безпека
+                      </p>
                       <p class="mega__blurb">
                         Безкоштовна психологічна й правова допомога, протидія булінгу, поради
                         батькам і правила безпеки.
                       </p>
-                      <a class="more-link" href="../pidtrymka.html">Усе про розділ<span aria-hidden="true"> →</span></a>
+                      <a
+                        class="more-link"
+                        href="../pidtrymka.html"
+                      >Усе про розділ<span aria-hidden="true"> →</span></a>
+                      <p class="mega__help">
+                        Не знайшли? <a href="../a-ia.html">Від А до Я</a> ·
+                        <a href="../poshuk.html">Пошук</a>
+                      </p>
                     </div>
                     <ul class="mega__links">
-                      <li><a href="../psy-service.html">Психологічна служба</a></li>
                       <li>
-                        <a href="../psy-service/zapobihannia-ta-protydiia-bulinhu.html">Протидія булінгу</a>
-                      </li>
-                      <li><a href="../batkam/tsikave-dlia-batkiv.html">Поради для батьків</a></li>
-                      <li>
-                        <a href="../vykhovna-robota/instruktsii-z-okhorony-pratsi.html">Інструкції з безпеки</a>
+                        <a href="../psy-service.html">
+                          <span class="mega__label">Психологічна служба</span>
+                          <span class="mega__desc">Графік психолога й юриста</span>
+                        </a>
                       </li>
                       <li>
-                        <a href="../psy-service/proforiientatsiina-robota.html">Профорієнтація</a>
+                        <a href="../psy-service/zapobihannia-ta-protydiia-bulinhu.html">
+                          <span class="mega__label">Протидія булінгу</span>
+                          <span class="mega__desc">Як повідомити й що робить школа</span>
+                        </a>
                       </li>
-                      <li><a href="../psy-service/plany-roboty.html">Плани роботи психолога</a></li>
+                      <li>
+                        <a href="../batkam/tsikave-dlia-batkiv.html">
+                          <span class="mega__label">Поради для батьків</span>
+                          <span class="mega__desc">Мотивація, безпека в інтернеті</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="../vykhovna-robota/instruktsii-z-okhorony-pratsi.html">
+                          <span class="mega__label">Інструкції з безпеки</span>
+                          <span class="mega__desc">Пам’ятка на канікули, охорона праці</span>
+                        </a>
+                      </li>
                     </ul>
                   </div>
                 </div>
               </li>
               <li class="mainnav__item">
-                <a class="mainnav__link" href="../prozorist-ta-inform-vidkrytist.html" data-mega="mega-prozorist" aria-current="true">Прозорість</a>
+                <a
+                  class="mainnav__link"
+                  href="../prozorist-ta-inform-vidkrytist.html"
+                  data-mega="mega-prozorist"
+                  aria-current="true"
+                >Документи</a>
                 <div class="mega" id="mega-prozorist" hidden>
                   <div class="container mega__inner">
                     <div class="mega__intro">
-                      <p class="mega__title">Прозорість</p>
-                      <p class="mega__blurb">
-                        Публічна інформація за статтею 30 Закону «Про освіту»: документи, фінанси,
-                        звіти, колектив.
+                      <p class="mega__title">
+                        <span class="icon icon-file-text" aria-hidden="true"></span
+                        >Документи
                       </p>
-                      <a class="more-link" href="../prozorist-ta-inform-vidkrytist.html">Усе про розділ<span aria-hidden="true"> →</span></a>
+                      <p class="mega__blurb">
+                        Публічна інформація за статтею 30 Закону «Про освіту»: статут, фінанси,
+                        звіти, правила, атестація.
+                      </p>
+                      <a
+                        class="more-link"
+                        href="../prozorist-ta-inform-vidkrytist.html"
+                      >Усе про розділ<span aria-hidden="true"> →</span></a>
+                      <p class="mega__help">
+                        Не знайшли? <a href="../a-ia.html">Від А до Я</a> ·
+                        <a href="../poshuk.html">Пошук</a>
+                      </p>
                     </div>
                     <ul class="mega__links">
-                      <li><a href="documents.html">Установчі документи</a></li>
                       <li>
-                        <a href="finansovo-hospodarska-diialnist.html">Фінансова звітність</a>
+                        <a href="documents.html">
+                          <span class="mega__label">Установчі документи</span>
+                          <span class="mega__desc">Статут, ліцензія, програми</span>
+                        </a>
                       </li>
-                      <li><a href="zvit-dyrektora-shkoly.html">Річні звіти</a></li>
-                      <li><a href="team.html">Педагогічний колектив</a></li>
-                      <li><a href="certification.html">Атестація</a></li>
-                      <li><a href="vakansii.html">Вакансії</a></li>
                       <li>
-                        <a href="rezultaty-monitorynhu-iakosti-osvity.html">Моніторинг якості освіти</a>
+                        <a href="finansovo-hospodarska-diialnist.html">
+                          <span class="mega__label">Фінансова звітність</span>
+                          <span class="mega__desc">Кошториси й звіти за роками</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="zvit-dyrektora-shkoly.html">
+                          <span class="mega__label">Річні звіти</span>
+                          <span class="mega__desc">Звіти директора за роками</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="pupils-rights.html">
+                          <span class="mega__label">Правила поведінки</span>
+                          <span class="mega__desc">Права й обов’язки учнів</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="osvitni-posluhy.html">
+                          <span class="mega__label">Плата й додаткові послуги</span>
+                          <span class="mega__desc">Навчання безоплатне; платні гуртки</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="certification.html">
+                          <span class="mega__label">Атестація педагогів</span>
+                          <span class="mega__desc">Накази, графіки, списки</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="rezultaty-monitorynhu-iakosti-osvity.html">
+                          <span class="mega__label">Моніторинг якості освіти</span>
+                          <span class="mega__desc">Опитування й успішність</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="rezultaty-anketuvannia-uchasnykiv-osvitnoho-protsesu.html">
+                          <span class="mega__label">Результати анкетування</span>
+                          <span class="mega__desc">Думка вчителів, учнів, батьків</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="materialno-tekhnichne-zabezpechennia.html">
+                          <span class="mega__label">Матеріально-технічне забезпечення</span>
+                          <span class="mega__desc">Приміщення й обладнання</span>
+                        </a>
                       </li>
                     </ul>
                   </div>
@@ -302,8 +535,12 @@
             </ul>
           </nav>
           <div class="mainbar__mobile">
-            <a class="iconbtn" href="../poshuk.html" aria-label="Пошук">
-              <span class="icon icon-search" aria-hidden="true"></span>
+            <a
+              class="iconbtn"
+              href="tel:+380322385291"
+              aria-label="Подзвонити до школи: +38 032 238 52 91"
+            >
+              <span class="icon icon-phone" aria-hidden="true"></span>
             </a>
             <a class="menubtn" href="../a-ia.html" data-menu-open="mobilenav">
               <span class="icon icon-menu" aria-hidden="true"></span>
@@ -312,14 +549,7 @@
           </div>
         </div>
       </div>
-      <div
-        class="mobilenav"
-        id="mobilenav"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Меню"
-        hidden
-      >
+      <dialog class="mobilenav" id="mobilenav" aria-label="Меню">
         <div class="mobilenav__head">
           <p class="mobilenav__title">Меню</p>
           <button type="button" class="mobilenav__close" data-menu-close>
@@ -327,110 +557,175 @@
             <span>Закрити</span>
           </button>
         </div>
+        <search class="qsearch qsearch--menu" aria-labelledby="qsearch-menu-label">
+          <form class="qsearch__form" action="../poshuk.html" data-quick-search>
+            <label
+              id="qsearch-menu-label"
+              class="qsearch__label"
+              for="qsearch-menu"
+            >Пошук по сайту</label>
+            <div class="qsearch__row">
+              <input
+                id="qsearch-menu"
+                class="qsearch__input"
+                type="search"
+                name="q"
+                placeholder="Розклад, харчування, вступ…"
+                autocomplete="off"
+                autocapitalize="none"
+                autocorrect="off"
+                spellcheck="false"
+                enterkeyhint="search"
+              >
+              <button type="submit" class="qsearch__btn">
+                <span class="icon icon-search" aria-hidden="true"></span>
+                <span class="visually-hidden">Шукати</span>
+              </button>
+            </div>
+          </form>
+        </search>
         <nav class="mobilenav__body" aria-label="Розділи сайту">
           <ul class="mobilenav__sections">
             <li>
-              <details>
-                <summary>Про школу</summary>
-                <ul>
-                  <li><a href="../about.html">Усе про розділ «Про школу»</a></li>
-                  <li><a href="../about/management.html">Адміністрація</a></li>
-                  <li><a href="team.html">Педагогічний колектив</a></li>
-                  <li><a href="struktura-upravlinnia.html">Структура управління</a></li>
-                  <li><a href="../about/pupils-government.html">Учнівське самоврядування</a></li>
-                  <li><a href="number-of-people.html">Кількість учнів</a></li>
-                  <li><a href="../kontakty.html">Контакти</a></li>
-                </ul>
-              </details>
+              <button
+                type="button"
+                class="mobilenav__toggle"
+                aria-expanded="false"
+                aria-controls="mobilenav-about"
+                data-submenu
+              ><span class="icon icon-info" aria-hidden="true"></span
+              >Про школу</button>
+              <ul id="mobilenav-about" hidden>
+                <li><a href="../about.html">Усе про розділ «Про школу»</a></li>
+                <li><a href="../about/management.html">Адміністрація</a></li>
+                <li><a href="team.html">Педагогічний колектив</a></li>
+                <li><a href="struktura-upravlinnia.html">Структура управління</a></li>
+                <li><a href="../about/pupils-government.html">Учнівське самоврядування</a></li>
+                <li><a href="number-of-people.html">Кількість учнів</a></li>
+                <li><a href="vakansii.html">Вакансії</a></li>
+              </ul>
             </li>
             <li>
-              <details>
-                <summary>Навчання</summary>
-                <ul>
-                  <li><a href="../navchannia.html">Усе про розділ «Навчання»</a></li>
-                  <li>
-                    <a href="../about/rozklad-zaniat-ta-rezhym-roboty.html">Розклад і режим роботи</a>
-                  </li>
-                  <li><a href="../about/evaluation-criteria.html">Критерії оцінювання</a></li>
-                  <li><a href="../inclusive-education.html">Інклюзивна освіта</a></li>
-                  <li><a href="../library.html">Бібліотека</a></li>
-                  <li><a href="documents.html">Установчі документи</a></li>
-                </ul>
-              </details>
+              <button
+                type="button"
+                class="mobilenav__toggle"
+                aria-expanded="false"
+                aria-controls="mobilenav-navchannia"
+                data-submenu
+              ><span class="icon icon-book-open" aria-hidden="true"></span
+              >Навчання</button>
+              <ul id="mobilenav-navchannia" hidden>
+                <li><a href="../navchannia.html">Усе про розділ «Навчання»</a></li>
+                <li>
+                  <a href="../about/rozklad-zaniat-ta-rezhym-roboty.html">Розклад і дзвінки</a>
+                </li>
+                <li><a href="../batkam/kharchuvannia-uchniv.html">Харчування</a></li>
+                <li><a href="../about/hurtky-ta-sektsii.html">Гуртки та секції</a></li>
+                <li><a href="../about/evaluation-criteria.html">Критерії оцінювання</a></li>
+                <li><a href="../inclusive-education.html">Інклюзивна освіта</a></li>
+                <li><a href="../library.html">Бібліотека</a></li>
+              </ul>
             </li>
             <li>
-              <details>
-                <summary>Вступ</summary>
-                <ul>
-                  <li><a href="../vstup.html">Усе про розділ «Вступ»</a></li>
-                  <li><a href="../vstup/1-klas.html">Вступ до 1 класу</a></li>
-                  <li><a href="../service-area.html">Територія обслуговування</a></li>
-                </ul>
-              </details>
+              <button
+                type="button"
+                class="mobilenav__toggle"
+                aria-expanded="false"
+                aria-controls="mobilenav-vstup"
+                data-submenu
+              ><span class="icon icon-school" aria-hidden="true"></span
+              >Вступ</button>
+              <ul id="mobilenav-vstup" hidden>
+                <li><a href="../vstup.html">Усе про розділ «Вступ»</a></li>
+                <li><a href="../vstup/1-klas.html">Вступ до 1&nbsp;класу</a></li>
+                <li><a href="../service-area.html">Територія обслуговування</a></li>
+              </ul>
             </li>
             <li>
-              <details>
-                <summary>Життя школи</summary>
-                <ul>
-                  <li><a href="../zhyttia-shkoly.html">Усе про розділ «Життя школи»</a></li>
-                  <li><a href="../novyny.html">Новини</a></li>
-                  <li><a href="../batkam/kharchuvannia-uchniv.html">Харчування</a></li>
-                  <li><a href="../about/hurtky-ta-sektsii.html">Гуртки та секції</a></li>
-                  <li><a href="../vykhovna-robota.html">Виховна робота</a></li>
-                  <li><a href="../vykhovna-robota/nashi-proekty.html">Наші проєкти та акції</a></li>
-                  <li>
-                    <a href="../vykhovna-robota/my-vamy-pyshaiemosia.html">Наші досягнення</a>
-                  </li>
-                  <li>
-                    <a href="../about/uchast-u-proektakh-hromadskoho-biudzhetu-mikroproektakh.html">Проєкти громадського бюджету</a>
-                  </li>
-                  <li><a href="../about/creative-workshop.html">Творча майстерня</a></li>
-                </ul>
-              </details>
+              <button
+                type="button"
+                class="mobilenav__toggle"
+                aria-expanded="false"
+                aria-controls="mobilenav-zhyttia"
+                data-submenu
+              ><span class="icon icon-users" aria-hidden="true"></span
+              >Життя школи</button>
+              <ul id="mobilenav-zhyttia" hidden>
+                <li><a href="../zhyttia-shkoly.html">Усе про розділ «Життя школи»</a></li>
+                <li><a href="../novyny.html">Новини</a></li>
+                <li><a href="../vykhovna-robota.html">Виховна робота</a></li>
+                <li><a href="../vykhovna-robota/nashi-proekty.html">Наші проєкти та акції</a></li>
+                <li><a href="../vykhovna-robota/my-vamy-pyshaiemosia.html">Наші досягнення</a></li>
+                <li>
+                  <a
+                    href="../about/uchast-u-proektakh-hromadskoho-biudzhetu-mikroproektakh.html"
+                  >Проєкти громадського бюджету</a>
+                </li>
+              </ul>
             </li>
             <li>
-              <details>
-                <summary>Підтримка і безпека</summary>
-                <ul>
-                  <li><a href="../pidtrymka.html">Усе про розділ «Підтримка і безпека»</a></li>
-                  <li><a href="../psy-service.html">Психологічна служба</a></li>
-                  <li>
-                    <a href="../psy-service/zapobihannia-ta-protydiia-bulinhu.html">Протидія булінгу</a>
-                  </li>
-                  <li><a href="../batkam/tsikave-dlia-batkiv.html">Поради для батьків</a></li>
-                  <li>
-                    <a href="../vykhovna-robota/instruktsii-z-okhorony-pratsi.html">Інструкції з безпеки</a>
-                  </li>
-                  <li>
-                    <a href="../psy-service/proforiientatsiina-robota.html">Профорієнтація</a>
-                  </li>
-                  <li><a href="../psy-service/plany-roboty.html">Плани роботи психолога</a></li>
-                </ul>
-              </details>
+              <button
+                type="button"
+                class="mobilenav__toggle"
+                aria-expanded="false"
+                aria-controls="mobilenav-pidtrymka"
+                data-submenu
+              ><span class="icon icon-heart-handshake" aria-hidden="true"></span
+              >Підтримка і безпека</button>
+              <ul id="mobilenav-pidtrymka" hidden>
+                <li><a href="../pidtrymka.html">Усе про розділ «Підтримка і безпека»</a></li>
+                <li><a href="../psy-service.html">Психологічна служба</a></li>
+                <li>
+                  <a
+                    href="../psy-service/zapobihannia-ta-protydiia-bulinhu.html"
+                  >Протидія булінгу</a>
+                </li>
+                <li><a href="../batkam/tsikave-dlia-batkiv.html">Поради для батьків</a></li>
+                <li>
+                  <a
+                    href="../vykhovna-robota/instruktsii-z-okhorony-pratsi.html"
+                  >Інструкції з безпеки</a>
+                </li>
+              </ul>
             </li>
             <li>
-              <details>
-                <summary>Прозорість</summary>
-                <ul>
-                  <li>
-                    <a href="../prozorist-ta-inform-vidkrytist.html">Усе про розділ «Прозорість»</a>
-                  </li>
-                  <li><a href="documents.html">Установчі документи</a></li>
-                  <li><a href="finansovo-hospodarska-diialnist.html">Фінансова звітність</a></li>
-                  <li><a href="zvit-dyrektora-shkoly.html">Річні звіти</a></li>
-                  <li><a href="team.html">Педагогічний колектив</a></li>
-                  <li><a href="certification.html">Атестація</a></li>
-                  <li><a href="vakansii.html">Вакансії</a></li>
-                  <li>
-                    <a href="rezultaty-monitorynhu-iakosti-osvity.html">Моніторинг якості освіти</a>
-                  </li>
-                </ul>
-              </details>
+              <button
+                type="button"
+                class="mobilenav__toggle"
+                aria-expanded="true"
+                aria-controls="mobilenav-prozorist"
+                data-submenu
+              ><span class="icon icon-file-text" aria-hidden="true"></span
+              >Документи</button>
+              <ul id="mobilenav-prozorist">
+                <li>
+                  <a href="../prozorist-ta-inform-vidkrytist.html">Усе про розділ «Документи»</a>
+                </li>
+                <li><a href="documents.html">Установчі документи</a></li>
+                <li><a href="finansovo-hospodarska-diialnist.html">Фінансова звітність</a></li>
+                <li><a href="zvit-dyrektora-shkoly.html">Річні звіти</a></li>
+                <li><a href="pupils-rights.html">Правила поведінки</a></li>
+                <li><a href="osvitni-posluhy.html">Плата й додаткові послуги</a></li>
+                <li><a href="certification.html">Атестація педагогів</a></li>
+                <li>
+                  <a href="rezultaty-monitorynhu-iakosti-osvity.html">Моніторинг якості освіти</a>
+                </li>
+                <li>
+                  <a
+                    href="rezultaty-anketuvannia-uchasnykiv-osvitnoho-protsesu.html"
+                  >Результати анкетування</a>
+                </li>
+                <li>
+                  <a
+                    href="materialno-tekhnichne-zabezpechennia.html"
+                    aria-current="page"
+                  >Матеріально-технічне забезпечення</a>
+                </li>
+              </ul>
             </li>
             <li><a class="mobilenav__direct" href="../kontakty.html">Контакти</a></li>
           </ul>
           <ul class="mobilenav__utility">
-            <li><a href="../novyny.html">Новини</a></li>
             <li><a href="../uchniam.html">Учням</a></li>
             <li><a href="../batkam.html">Батькам</a></li>
             <li><a href="../vchyteliam.html">Вчителям</a></li>
@@ -446,7 +741,7 @@
             info@school50.lviv.ua
           </a>
         </p>
-      </div>
+      </dialog>
     </header>
     <main id="zmist" tabindex="-1">
       <div class="page-head">
@@ -459,7 +754,7 @@
                 </span>
               </li>
               <li>
-                <a href="../prozorist-ta-inform-vidkrytist.html">Прозорість</a>
+                <a href="../prozorist-ta-inform-vidkrytist.html">Документи</a>
                 <span class="icon icon-chevron-right icon-small crumbs__sep" aria-hidden="true">
                 </span>
               </li>
@@ -477,43 +772,91 @@
           <h2 id="secnav-title" class="secnav__title">У цьому розділі</h2>
           <ul class="secnav__list">
             <li>
-              <a href="../prozorist-ta-inform-vidkrytist.html" class="secnav__link">Огляд розділу</a>
+              <a
+                href="../prozorist-ta-inform-vidkrytist.html"
+                class="secnav__link"
+              >Огляд розділу</a>
             </li>
             <li><a href="documents.html" class="secnav__link">Установчі документи</a></li>
             <li>
-              <a href="finansovo-hospodarska-diialnist.html" class="secnav__link">Фінансова звітність</a>
+              <a
+                href="finansovo-hospodarska-diialnist.html"
+                class="secnav__link"
+              >Фінансова звітність</a>
             </li>
             <li><a href="zvit-dyrektora-shkoly.html" class="secnav__link">Річні звіти</a></li>
-            <li><a href="team.html" class="secnav__link">Педагогічний колектив</a></li>
-            <li><a href="certification.html" class="secnav__link">Атестація</a></li>
-            <li><a href="vakansii.html" class="secnav__link">Вакансії</a></li>
+            <li><a href="pupils-rights.html" class="secnav__link">Правила поведінки</a></li>
             <li>
-              <a href="rezultaty-monitorynhu-iakosti-osvity.html" class="secnav__link">Моніторинг якості освіти</a>
+              <a href="osvitni-posluhy.html" class="secnav__link">Плата й додаткові послуги</a>
+            </li>
+            <li><a href="certification.html" class="secnav__link">Атестація педагогів</a></li>
+            <li>
+              <a
+                href="rezultaty-monitorynhu-iakosti-osvity.html"
+                class="secnav__link"
+              >Моніторинг якості освіти</a>
+            </li>
+            <li>
+              <a
+                href="rezultaty-anketuvannia-uchasnykiv-osvitnoho-protsesu.html"
+                class="secnav__link"
+              >Результати анкетування</a>
+            </li>
+            <li>
+              <a
+                href="materialno-tekhnichne-zabezpechennia.html"
+                class="secnav__link is-current"
+                aria-current="page"
+              >Матеріально-технічне забезпечення</a>
             </li>
           </ul>
         </nav>
         <div class="page__main">
           <details class="secnav secnav--mobile">
-            <summary>У розділі «Прозорість»</summary>
+            <summary>У розділі «Документи»</summary>
             <ul class="secnav__list">
               <li>
-                <a href="../prozorist-ta-inform-vidkrytist.html" class="secnav__link">Огляд розділу</a>
+                <a
+                  href="../prozorist-ta-inform-vidkrytist.html"
+                  class="secnav__link"
+                >Огляд розділу</a>
               </li>
               <li><a href="documents.html" class="secnav__link">Установчі документи</a></li>
               <li>
-                <a href="finansovo-hospodarska-diialnist.html" class="secnav__link">Фінансова звітність</a>
+                <a
+                  href="finansovo-hospodarska-diialnist.html"
+                  class="secnav__link"
+                >Фінансова звітність</a>
               </li>
               <li><a href="zvit-dyrektora-shkoly.html" class="secnav__link">Річні звіти</a></li>
-              <li><a href="team.html" class="secnav__link">Педагогічний колектив</a></li>
-              <li><a href="certification.html" class="secnav__link">Атестація</a></li>
-              <li><a href="vakansii.html" class="secnav__link">Вакансії</a></li>
+              <li><a href="pupils-rights.html" class="secnav__link">Правила поведінки</a></li>
               <li>
-                <a href="rezultaty-monitorynhu-iakosti-osvity.html" class="secnav__link">Моніторинг якості освіти</a>
+                <a href="osvitni-posluhy.html" class="secnav__link">Плата й додаткові послуги</a>
+              </li>
+              <li><a href="certification.html" class="secnav__link">Атестація педагогів</a></li>
+              <li>
+                <a
+                  href="rezultaty-monitorynhu-iakosti-osvity.html"
+                  class="secnav__link"
+                >Моніторинг якості освіти</a>
+              </li>
+              <li>
+                <a
+                  href="rezultaty-anketuvannia-uchasnykiv-osvitnoho-protsesu.html"
+                  class="secnav__link"
+                >Результати анкетування</a>
+              </li>
+              <li>
+                <a
+                  href="materialno-tekhnichne-zabezpechennia.html"
+                  class="secnav__link is-current"
+                  aria-current="page"
+                >Матеріально-технічне забезпечення</a>
               </li>
             </ul>
           </details>
           <div class="content">
-            <ul class="docs">
+            <ul class="docs" role="list">
               <li class="doc doc--ext" data-k="file">
                 <a
                   class="doc__link"
@@ -526,10 +869,20 @@
               </li>
             </ul>
           </div>
+          <nav class="pager" aria-label="Інші сторінки розділу">
+            <a
+              class="pager__link pager__link--prev"
+              href="rezultaty-anketuvannia-uchasnykiv-osvitnoho-protsesu.html"
+              rel="prev"
+            >
+              <span class="pager__dir">Попередня</span>
+              <span class="pager__title">Результати анкетування</span>
+            </a>
+          </nav>
           <p class="updated">Оновлено: <time datetime="2026-11-14">14 листопада 2026</time></p>
-          <section class="related" aria-labelledby="related-title">
+          <section class="related">
             <h2 id="related-title" class="related__title">Пов'язані сторінки</h2>
-            <ul class="cards">
+            <ul class="cards" role="list">
               <li>
                 <article class="card">
                   <div class="card__body">
@@ -537,9 +890,9 @@
                       <a href="../inclusive-education.html" class="card__link">Інклюзивна освіта</a>
                     </h3>
                     <p class="card__text">
-                      Інклюзивне навчання в СЗШ № 50 м. Львова: команда фахівців, принципи,
-                      логопедичний кабінет, сенсорна й ресурсна кімнати, соціально-побутове
-                      орієнтування.
+                      Даруємо любов і турботу кожному! Ми готові у будь-який час прийняти кожну
+                      дитину й створити максимально сприятливе середовище для розвитку її
+                      потенціалу.
                     </p>
                   </div>
                 </article>
@@ -548,11 +901,14 @@
                 <article class="card">
                   <div class="card__body">
                     <h3 class="card__title">
-                      <a href="../about/uchast-u-proektakh-hromadskoho-biudzhetu-mikroproektakh.html" class="card__link">Проєкти громадського бюджету</a>
+                      <a
+                        href="../about/uchast-u-proektakh-hromadskoho-biudzhetu-mikroproektakh.html"
+                        class="card__link"
+                      >Проєкти громадського бюджету</a>
                     </h3>
                     <p class="card__text">
-                      Участь СЗШ № 50 м. Львова в проєктах громадського бюджету й мікропроєктах:
-                      «Наука: дій!», «Привітна школа», «Сучасна лабораторія фізики у СЗШ № 50».
+                      Конкурси й проєкти, у яких школа бере участь: «Наука: дій!», «Привітна школа»
+                      і «Сучасна лабораторія фізики».
                     </p>
                   </div>
                 </article>
@@ -563,11 +919,7 @@
                     <h3 class="card__title">
                       <a href="../library.html" class="card__link">Бібліотека</a>
                     </h3>
-                    <p class="card__text">
-                      Шкільна бібліотека СЗШ № 50 м. Львова: результати вибору електронних версій
-                      підручників для 4 і 8 класів і протоколи педагогічної ради про вибір
-                      підручників.
-                    </p>
+                    <p class="card__text">Шкільна бібліотека й документи про вибір підручників.</p>
                   </div>
                 </article>
               </li>
@@ -582,7 +934,7 @@
           <h2 id="ask-title" class="ask__title">Маєте питання?</h2>
           <p class="ask__text">Зателефонуйте до приймальні або напишіть на пошту школи.</p>
         </div>
-        <ul class="ask__list">
+        <ul class="ask__list" role="list">
           <li>
             <span class="icon icon-phone icon-medium" aria-hidden="true"></span>
             <a href="tel:+380322385291">+38 032 238 52 91</a>
@@ -593,22 +945,26 @@
           </li>
           <li>
             <span class="icon icon-map-pin icon-medium" aria-hidden="true"></span>
-            <span>вул. Комаринця, 2, м. Львів, 79026</span>
+            <span>вул.&nbsp;Комаринця, 2, м.&nbsp;Львів, 79026</span>
           </li>
         </ul>
       </div>
     </aside>
     <footer class="site-footer">
       <div class="container footer__grid">
-        <section class="footer__col" aria-labelledby="footer-contacts">
+        <section class="footer__col">
           <h2 id="footer-contacts" class="footer__title">Контакти</h2>
           <address class="footer__address">
-            Середня загальноосвітня школа І–ІІІ ступенів № 50 м. Львова<br>
-            вул. Комаринця, 2, м. Львів, 79026
+            Середня загальноосвітня школа І–ІІІ ступенів №&nbsp;50 м.&nbsp;Львова<br>
+            вул.&nbsp;Комаринця, 2, м.&nbsp;Львів, 79026
           </address>
-          <ul class="footer__list">
+          <ul class="footer__list" role="list">
             <li>
-              <a href="https://goo.gl/maps/bv6h7DhiZK6bK6NN9" class="ext">Відкрити на карті<span class="ext__mark" aria-hidden="true">↗</span><span class="visually-hidden"> (відкривається на іншому сайті)</span></a>
+              <a
+                href="https://goo.gl/maps/bv6h7DhiZK6bK6NN9"
+                class="ext"
+              >Відкрити на карті<span class="ext__mark" aria-hidden="true">↗</span
+              ><span class="visually-hidden"> (відкривається на іншому сайті)</span></a>
             </li>
             <li><a href="tel:+380322385291">+38 032 238 52 91</a></li>
             <li><a href="mailto:info@school50.lviv.ua">info@school50.lviv.ua</a></li>
@@ -619,10 +975,10 @@
           <h2 id="footer-quick" class="footer__title">Швидкі посилання</h2>
           <ul class="footer__list">
             <li>
-              <a href="../about/rozklad-zaniat-ta-rezhym-roboty.html">Розклад і режим роботи</a>
+              <a href="../about/rozklad-zaniat-ta-rezhym-roboty.html">Розклад і дзвінки</a>
             </li>
             <li><a href="../batkam/kharchuvannia-uchniv.html">Харчування</a></li>
-            <li><a href="../vstup/1-klas.html">Вступ до 1 класу</a></li>
+            <li><a href="../vstup/1-klas.html">Вступ до 1&nbsp;класу</a></li>
             <li><a href="../about/hurtky-ta-sektsii.html">Гуртки та секції</a></li>
             <li><a href="vakansii.html">Вакансії</a></li>
           </ul>
@@ -630,7 +986,7 @@
         <nav class="footer__col" aria-labelledby="footer-public">
           <h2 id="footer-public" class="footer__title">Публічна інформація</h2>
           <ul class="footer__list">
-            <li><a href="../prozorist-ta-inform-vidkrytist.html">Прозорість</a></li>
+            <li><a href="../prozorist-ta-inform-vidkrytist.html">Документи</a></li>
             <li><a href="documents.html">Установчі документи</a></li>
             <li><a href="finansovo-hospodarska-diialnist.html">Фінансова звітність</a></li>
             <li><a href="zvit-dyrektora-shkoly.html">Річні звіти</a></li>
@@ -646,14 +1002,18 @@
             <li><a href="../konfidentsiinist.html">Конфіденційність</a></li>
             <li><a href="../poshuk.html">Пошук</a></li>
             <li>
-              <a href="https://www.facebook.com/poltinnik.lviv/" class="ext">Школа у Facebook<span class="ext__mark" aria-hidden="true">↗</span><span class="visually-hidden"> (відкривається на іншому сайті)</span></a>
+              <a
+                href="https://www.facebook.com/poltinnik.lviv/"
+                class="ext"
+              >Школа у Facebook<span class="ext__mark" aria-hidden="true">↗</span
+              ><span class="visually-hidden"> (відкривається на іншому сайті)</span></a>
             </li>
           </ul>
         </nav>
       </div>
       <div class="footer__bottom">
         <div class="container footer__bottom-inner">
-          <p>© 2026 СЗШ № 50 м. Львова</p>
+          <p>© 2026 СЗШ №&nbsp;50 м.&nbsp;Львова</p>
           <p>Департамент освіти та культури Львівської міської ради</p>
           <p>Сайт оновлено: 15.11.2026</p>
         </div>

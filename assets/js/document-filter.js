@@ -1,5 +1,6 @@
 (() => {
   const DOCUMENT_FORMS = ['документ', 'документи', 'документів'];
+  const TYPING_PAUSE = 400;
 
   function plural(count, forms) {
     const lastTwo = count % 100;
@@ -37,6 +38,14 @@
       if (counter) counter.dataset.total = counter.textContent;
     });
 
+    let statusMessage = '';
+    let pauseTimer = 0;
+
+    function announce() {
+      clearTimeout(pauseTimer);
+      status.textContent = statusMessage;
+    }
+
     function update() {
       const text = normalize(textField.value);
       const year = yearField ? yearField.value : '';
@@ -66,17 +75,26 @@
       });
 
       resetButton.hidden = !isActive;
-      status.textContent = isActive ? `Показано ${shown} з ${totalText}` : `Усього ${totalText}`;
+      statusMessage = isActive ? `Показано ${shown} з ${totalText}` : `Усього ${totalText}`;
     }
 
-    textField.addEventListener('input', update);
-    if (yearField) yearField.addEventListener('change', update);
-    if (typeField) typeField.addEventListener('change', update);
+    function updateNow() {
+      update();
+      announce();
+    }
+
+    textField.addEventListener('input', () => {
+      update();
+      clearTimeout(pauseTimer);
+      pauseTimer = setTimeout(announce, TYPING_PAUSE);
+    });
+    if (yearField) yearField.addEventListener('change', updateNow);
+    if (typeField) typeField.addEventListener('change', updateNow);
     resetButton.addEventListener('click', () => {
       textField.value = '';
       if (yearField) yearField.value = '';
       if (typeField) typeField.value = '';
-      update();
+      updateNow();
       textField.focus();
     });
 
